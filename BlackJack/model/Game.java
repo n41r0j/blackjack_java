@@ -1,13 +1,18 @@
 package BlackJack.model;
 
+import BlackJack.model.rules.AbstractRulesFactory;
+
 public class Game {
 
     private Dealer m_dealer;
     private Player m_player;
+    private AbstractRulesFactory gameRules;
 
-    public Game() {
-        m_dealer = new Dealer(new BlackJack.model.rules.RulesFactory());
+    public Game(AbstractRulesFactory rulesFactory) {
+        m_dealer = new Dealer(rulesFactory);
+        //m_dealer = new Dealer(new BlackJack.model.rules.AmericanRuleFactory());
         m_player = new Player();
+        this.gameRules = rulesFactory;
     }
 
 
@@ -48,5 +53,13 @@ public class Game {
         return m_player.calcScore();
     }
 
+    public void registerObserver(IObserver observer) {
+        m_player.addObserver(observer);
+        m_dealer.addObserver(observer);
+    }
+
+    public AbstractRulesFactory getRules() {
+        return gameRules;
+    }
 
 }

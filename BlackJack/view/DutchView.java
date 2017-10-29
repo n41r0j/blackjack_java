@@ -1,13 +1,34 @@
 package BlackJack.view;
 
 import BlackJack.model.Card;
+import BlackJack.model.rules.AbstractRulesFactory;
 
 public class DutchView implements IView {
     @Override
     public void displayWelcomeMessage() {
-        System.out.println("Hallo, BlackJack-wereld!");
+        System.out.println("\nHallo, BlackJack-wereld!");
         System.out.println("-/-/-/-/-/-/-/-/-/-/-/-/-/-");
-        System.out.println("Typ 'n' voor een nieuw spel, 'h' voor hit, 's' voor stand en 'a' om af te sluiten.");
+        System.out.println("Typ 'n' voor een nieuw spel, 'a' om af te sluiten");
+    }
+
+    @Override
+    public void displayInstructions() {
+        System.out.println("Typ 'h' voor hit, 's' voor stand en 'a' om dit spel af te breken.");
+    }
+
+
+    // I tried implementing the visitor pattern, but I'm not sure about how to handle the translations here.
+    // It seems a bit overkill to create all this new interfaces and classes just for getting the current
+    // rules.
+    @Override
+    public void displayRulesOfGame(AbstractRulesFactory rules) {
+        System.out.println("\nDe spelregels:");
+
+        DutchAbstractRuleVisitor ruleVisitor = new DutchAbstractRuleVisitor();
+        ruleVisitor.visit(rules.getNewGameRule());
+        ruleVisitor.visit(rules.getGameWinRule());
+        ruleVisitor.visit(rules.getHitRule());
+
     }
 
     @Override
@@ -70,10 +91,9 @@ public class DutchView implements IView {
                 }
             } catch (java.io.IOException e) {
                 System.out.println("" + e);
-                return GameInput.NONE;
             }
+            return GameInput.NONE;
         }
-        return GameInput.NONE;
     }
 
     private void displayHand(String a_name, Iterable<BlackJack.model.Card> a_hand, int a_score)
