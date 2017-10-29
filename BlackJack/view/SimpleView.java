@@ -76,7 +76,7 @@ public class SimpleView implements IView {
     public void displayRulesOfGame(AbstractRulesFactory rules) {
         DutchAbstractRuleVisitor ruleVisitor = new DutchAbstractRuleVisitor();
 
-        System.out.println("\nGame rules:");
+        System.out.println("\nGame rules:\n");
         ruleVisitor.visit(rules.getHitRule());
         ruleVisitor.visit(rules.getGameWinRule());
         ruleVisitor.visit(rules.getNewGameRule());
