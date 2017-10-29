@@ -9,13 +9,17 @@ import BlackJack.controller.*;
 public class Program {
 
     public static void main(String[] a_args) {
+        IView v;
 
+        if (a_args.length > 0 && a_args[0].equals("nl")) {
+            v = new DutchView();
+        } else {
+            v = new SimpleView();
+        }
         Game g = new Game(new BasicHard17RuleFactory());
-        //Game g = new Game(new AmericanRuleFactory());
-        IView v = //new SimpleView();
-                  new DutchView();
-        PlayGame ctrl = new PlayGame(g,v);
+        PlayGame ctrl = new PlayGame(g, v);
 
         while (ctrl.play(g, v)) ;
+
     }
 }
